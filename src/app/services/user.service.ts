@@ -1,12 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
 
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { environment } from 'src/environments/environment';
+import { LoadUser } from '../interfaces/load-users.interface';
+
 import { User } from '../models/user.model';
 
 const base_url = environment.base_url;
@@ -34,6 +37,14 @@ export class UserService {
 
   get uid(): string {
     return this.user.uid || '';
+  }
+
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token,
+      },
+    };
   }
 
   googleInit() {
@@ -92,12 +103,7 @@ export class UserService {
       ...data,
       role: this.user.role,
     };
-
-    return this.http.put(`${base_url}/users/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token,
-      },
-    });
+    return this.http.put(`${base_url}/users/${this.uid}`, data, this.headers);
   }
 
   login(formData: LoginForm) {
@@ -114,5 +120,38 @@ export class UserService {
         localStorage.setItem('token', resp.token);
       })
     );
+  }
+
+  loadUsers(from: number = 0) {
+    const url = `${base_url}/users?from=${from}`;
+    return this.http.get<LoadUser>(url, this.headers).pipe(
+      map((resp) => {
+        const users = resp.users.map(
+          (user) =>
+            new User(
+              user.name,
+              user.email,
+              '',
+              user.img,
+              user.google,
+              user.role,
+              user.uid
+            )
+        );
+        return {
+          total: resp.total,
+          users,
+        };
+      })
+    );
+  }
+
+  deleteUser(user: User) {
+    const url = `${base_url}/users/${user.uid}`;
+    return this.http.delete(url, this.headers);
+  }
+
+  saveUser(user: User) {
+    return this.http.put(`${base_url}/users/${user.uid}`, user, this.headers);
   }
 }
