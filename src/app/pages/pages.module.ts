@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -16,6 +17,9 @@ import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsersComponent } from './maintenances/users/users.component';
+import { HospitalsComponent } from './maintenances/hospitals/hospitals.component';
+import { MedicsComponent } from './maintenances/medics/medics.component';
+import { MedicComponent } from './maintenances/medics/medic.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,9 @@ import { UsersComponent } from './maintenances/users/users.component';
     RxjsComponent,
     ProfileComponent,
     UsersComponent,
+    HospitalsComponent,
+    MedicsComponent,
+    MedicComponent,
   ],
   exports: [
     DashboardComponent,
@@ -45,6 +52,7 @@ import { UsersComponent } from './maintenances/users/users.component';
     SharedModule,
     RouterModule,
     ComponentsModule,
+    PipesModule,
   ],
 })
 export class PagesModule {}

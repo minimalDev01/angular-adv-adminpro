@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 import { User } from 'src/app/models/user.model';
@@ -6,8 +8,6 @@ import { User } from 'src/app/models/user.model';
 import { SearchesService } from 'src/app/services/searches.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalImageService } from 'src/app/services/modal-image.service';
-import { delay } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -66,7 +66,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       return (this.users = this.usersTemp);
     }
 
-    this.searchesService.search('users', term).subscribe((results) => {
+    this.searchesService.search('users', term).subscribe((results: User[]) => {
       this.users = results;
     });
   }
