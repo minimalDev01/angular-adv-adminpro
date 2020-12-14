@@ -17,6 +17,8 @@ import { UsersComponent } from './maintenances/users/users.component';
 import { HospitalsComponent } from './maintenances/hospitals/hospitals.component';
 import { MedicsComponent } from './maintenances/medics/medics.component';
 import { MedicComponent } from './maintenances/medics/medic.component';
+import { SearchComponent } from './search/search.component';
+import { AdminGuard } from '../guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -26,6 +28,16 @@ const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
       {
+        path: 'account-settings',
+        component: AccountSettingsComponent,
+        data: { title: 'Account Settings' },
+      },
+      {
+        path: 'search/:term',
+        component: SearchComponent,
+        data: { title: 'Searches' },
+      },
+      {
         path: 'progress',
         component: ProgressComponent,
         data: { title: 'Progress Bar' },
@@ -34,11 +46,6 @@ const routes: Routes = [
         path: 'grafica1',
         component: Grafica1Component,
         data: { title: 'Graphics' },
-      },
-      {
-        path: 'account-settings',
-        component: AccountSettingsComponent,
-        data: { title: 'Account Settings' },
       },
       {
         path: 'promises',
@@ -55,6 +62,7 @@ const routes: Routes = [
       // Maintenances
       {
         path: 'users',
+        canActivate: [AdminGuard],
         component: UsersComponent,
         data: { title: 'Users Maintenances' },
       },

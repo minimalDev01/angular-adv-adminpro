@@ -50,6 +50,11 @@ export class SearchesService {
     return results;
   }
 
+  globallySearch(term: string) {
+    const url = `${base_url}/all/${term}`;
+    return this.http.get(url, this.headers);
+  }
+
   search(type: 'users' | 'medics' | 'hospitals', term: string = '') {
     const url = `${base_url}/all/collection/${type}/${term}`;
     return this.http.get<any[]>(url, this.headers).pipe(
